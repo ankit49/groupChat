@@ -7,15 +7,18 @@
     "server": "nodemon server",
     "client": "npm start --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha '**/*.spec.js' --exit"
   },
   "author": "Ankit Rajput",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.3.10",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.5.3"
+    "mongoose": "^7.5.3",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
     "concurrently": "^8.2.1",

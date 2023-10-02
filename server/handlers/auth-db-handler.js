@@ -4,20 +4,23 @@ const bcrypt = require("bcryptjs");
 
 const addUser = async ({ name, email, hashedPw, isAdmin }) => {
   try {
-    const user = new User({
-      name: name,
-      email: email,
-      password: hashedPw,
-      isAdmin: isAdmin,
-    });
+    if (name && email && hashedPw && isAdmin) {
+      const user = new User({
+        name: name,
+        email: email,
+        password: hashedPw,
+        isAdmin: isAdmin,
+      });
 
-    user.save();
+      user.save();
 
-    return {
-      errorCode: 0,
-      token: generateToken({ id: user.id, email: user.email }),
-      message: "User Registered",
-    };
+      return {
+        errorCode: 0,
+        message: `User Registered`,
+      };
+    } else {
+      throw new Error("Bad Body Request");
+    }
   } catch (error) {
     return {
       errorCode: 500,
@@ -64,8 +67,8 @@ const findUserById = async (id) => {
   return await User.findById(id).select("-password");
 };
 
-const updateUserByEmail = async (email, name, value) => {
-  return await User.updateOne({ email: email }, { $set: { [name]: value } });
+const updateUserByEmail = async (email, obj) => {
+  return await User.updateOne({ email: email }, { $set: obj });
 };
 
 const deleteUserByEmail = async (email, name, value) => {

@@ -10,8 +10,8 @@ const {
   findUserById,
   fetchIsAdminStatus,
 } = require("../handlers/auth-db-handler");
+const { findGroupsByEmail } = require("../handlers/group-db-handler");
 
-/**Signup module to create a user  */
 const registerUser = async (req, res) => {
   let adminStatus = await verifyIfAdmin(req);
 
@@ -25,11 +25,15 @@ const registerUser = async (req, res) => {
       bcrypt
         .hash(password, 12)
         .then(async (hashedPw) => {
-          const user = await addUser({ name, email, hashedPw, isAdmin });
-          res.status(200).json({ token: user.token });
+          const result = await addUser({ name, email, hashedPw, isAdmin });
+          if (result.errorCode === 0) {
+            res.status(200).json(result.message);
+          } else {
+            res.status(result.errorCode).json(result.message);
+          }
         })
         .catch((err) => {
-          res.status(400).json(err.message);
+          res.status(err.errorCode).json(err.message);
         });
     }
   } else {
@@ -37,7 +41,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-/* Login module to check if user is allowed to be logged in  */
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   let response = await validateUser(email, password);
@@ -48,25 +51,35 @@ const loginUser = async (req, res) => {
   }
 };
 
-/* Module to update user details */
 const updateUser = async (req, res) => {
   try {
     let adminStatus = await verifyIfAdmin(req);
     if (adminStatus) {
-      let { email, updatedFieldName, updatedValue } = req.body;
-      if (updatedFieldName === "email") {
-        res.status(403).json("Email cannot be changed");
+      let { name, email, password, isAdmin } = req.body;
+      let obj = {};
+      if (password) {
+        password = await bcrypt.hash(password, 12);
+        obj = {
+          name: name,
+          password: password,
+          isAdmin: isAdmin,
+        };
       } else {
-        if (updatedFieldName === "password") {
-          updatedValue = await bcrypt.hash(updatedValue, 12);
-        }
+        obj = {
+          name: name,
+          isAdmin: isAdmin,
+        };
+      }
 
-        const result = await updateUserByEmail(
-          email,
-          updatedFieldName,
-          updatedValue
-        );
-        res.status(200).json({ result });
+      const result = await updateUserByEmail(email, obj);
+      if (result.modifiedCount) {
+        res.status(200).json("Modified");
+      } else {
+        res
+          .status(500)
+          .json(
+            "Cannot Modify the User. Please try again with correct details."
+          );
       }
     } else {
       res.status(403).json("Only Admin can update a user");
@@ -76,7 +89,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-/* Module to delete user */
 const deleteUser = async (req, res) => {
   try {
     let adminStatus = await verifyIfAdmin(req);
@@ -84,7 +96,15 @@ const deleteUser = async (req, res) => {
       let { email } = req.body;
 
       const result = await deleteUserByEmail(email);
-      res.status(200).json({ result });
+      if (result.deletedCount) {
+        res.status(200).json("User Deleted");
+      } else {
+        res
+          .status(500)
+          .json(
+            "Cannot Delete the User. Please try again with correct details."
+          );
+      }
     } else {
       res.status(403).json("Only Admin can delete a user");
     }
@@ -93,7 +113,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-/* Module to fetch all users */
 const listUsers = async (req, res) => {
   try {
     const result = await listAllUsers();
@@ -103,12 +122,17 @@ const listUsers = async (req, res) => {
   }
 };
 
-/* Module to get current logged in user */
 const getCurrentUser = async (req, res) => {
   try {
     let decoded = decodeToken(req?.headers?.authorization?.split(" ")[1]);
     const result = await findUserById(decoded.id);
-    res.status(200).json(result);
+    let groups = await findGroupsByEmail(result.email);
+    res.status(200).json({
+      name: result.name,
+      email: result.email,
+      isAdmin: result.isAdmin,
+      groups: groups,
+    });
   } catch (error) {
     res.status(401).json(error.message);
   }
