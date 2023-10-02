@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem, MenuItemStyles } from "react-pro-sidebar";
-import { Box, Button } from "@mui/material";
-import bgImage from "../assets/images/bg.jpg";
+import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import CreateGroupModal from "../helpers/create-group-modal";
+import CreateGroupModal from "../helpers/modals/create-group-modal";
+import bgImage from "../assets/images/bg.jpg";
 
 const SidebarComponent = (props) => {
   const [collapsed, setCollapsed] = useState(false);
@@ -15,14 +15,8 @@ const SidebarComponent = (props) => {
   /** @type {MenuItemStyles} */
   const menuItemStyles = {
     root: {
-      fontSize: "13px",
-      fontWeight: 400,
-    },
-    icon: {
-      color: "#59d0ff",
-    },
-    SubMenuExpandIcon: {
-      color: "#b6b7b9",
+      fontSize: "14px",
+      fontWeight: 300,
     },
     subMenuContent: ({ level }) => ({
       backgroundColor:
@@ -32,20 +26,16 @@ const SidebarComponent = (props) => {
     }),
     button: {
       "&:hover": {
-        backgroundColor: `rgb(0, 69, 139, ${bgImage ? 0.8 : 1})`,
+        backgroundColor: "#005c4b",
         color: "#b6c8d9",
       },
     },
-    label: ({ open }) => ({
-      fontWeight: open ? 600 : undefined,
-    }),
   };
 
   return (
     <div>
       <Sidebar
-        // image={bgImage ? bgImage : false}
-        backgroundColor="#202c33"
+        backgroundColor="#363636"
         collapsed={collapsed}
         customBreakPoint="899px"
         onBreakPoint={setBroken}
@@ -53,36 +43,53 @@ const SidebarComponent = (props) => {
         toggled={toggled}
         rootStyles={{
           height: "100%",
-          color: "#8ba1b7",
+          color: "#b6b7b9",
           borderRight: broken ? "none" : "1px solid #636D6E",
         }}
       >
         <Box
           sx={{
-            opacity: collapsed ? 0 : 0.7,
-            margin: "30px 0 0 5px",
-            fontSize: "12px",
-            letterSpacing: "0.5px",
+            height: "40px",
+            borderBottom: "1px solid #636D6E",
+            padding: "10px 0",
           }}
         >
-          Groups
+          <Typography align="center" variant="h4" sx={{ height: "40px" }}>
+            Group Chat
+          </Typography>
         </Box>
-        <Menu menuItemStyles={menuItemStyles}>
-          {props.userGroups.map((group) => (
-            <MenuItem
-              key={group._id}
-              onClick={() => setToggled(false)}
-              component={<Link to={"/app/group/" + group._id} />}
-            >
-              {group.name}
-            </MenuItem>
-          ))}
-          <CreateGroupModal
-            setToggled={setToggled}
-            allUsers={props.allUsers}
-            handleCreateGroup={props.handleCreateGroup}
-          />
-        </Menu>
+        <Box
+          sx={{
+            borderBottom: "1px solid #636D6E",
+          }}
+        >
+          <Box
+            sx={{
+              opacity: collapsed ? 0 : 0.7,
+              margin: "30px 0 0 5px",
+              fontSize: "12px",
+              letterSpacing: "0.5px",
+            }}
+          >
+            Groups
+          </Box>
+          <Menu menuItemStyles={menuItemStyles}>
+            {props.userGroups.map((group) => (
+              <MenuItem
+                key={group._id}
+                onClick={() => setToggled(false)}
+                component={<Link to={"/app/group/" + group._id} />}
+              >
+                {group.name}
+              </MenuItem>
+            ))}
+            <CreateGroupModal
+              setToggled={setToggled}
+              allUsers={props.allUsers}
+              handleCreateGroup={props.handleCreateGroup}
+            />
+          </Menu>
+        </Box>
         <Box
           sx={{
             opacity: collapsed ? 0 : 0.7,
@@ -114,9 +121,8 @@ const SidebarComponent = (props) => {
             height: "30px",
             width: "100%",
             borderRadius: "0px",
-            background:
-              "linear-gradient(90deg, hsla(210, 72%, 14%, 1) 0%, hsla(209, 45%, 26%, 1) 53%, hsla(210, 45%, 43%, 1) 100%)",
-            color: "#e0e0e0",
+            backgroundColor: "#363636",
+            color: "#005c4b",
             letterSpacing: "0.5em",
           }}
           onClick={() => setToggled(!toggled)}

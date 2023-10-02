@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const addUser = async ({ name, email, hashedPw, isAdmin }) => {
   try {
-    if (name && email && hashedPw && isAdmin) {
+    if (name && email && hashedPw) {
       const user = new User({
         name: name,
         email: email,
@@ -71,11 +71,11 @@ const updateUserByEmail = async (email, obj) => {
   return await User.updateOne({ email: email }, { $set: obj });
 };
 
-const deleteUserByEmail = async (email, name, value) => {
+const deleteUserByEmail = async (email) => {
   return await User.deleteOne({ email: email });
 };
 
-const listAllUsers = async (email, name, value) => {
+const listAllUsers = async () => {
   return await User.find().select("-password");
 };
 

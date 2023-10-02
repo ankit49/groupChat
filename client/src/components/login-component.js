@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Container, Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Typography } from "@mui/material";
 import { Login } from "@mui/icons-material";
-import "./login-component.scss";
+import bgImage from "../assets/images/bg.jpg";
 
 const LoginComponent = (props) => {
   const [email, setEmail] = useState("");
@@ -13,58 +13,66 @@ const LoginComponent = (props) => {
   };
 
   return (
-    <Container
-      className="flex-center"
+    <Box
       sx={{
         height: "100vh",
         width: "100vw",
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
       }}
     >
       <Box
         sx={{
-          width: (theme) => theme.spacing(50),
-          height: (theme) => theme.spacing(40),
-          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-          backgroundColor: "#ededed",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: { xs: 300, md: 400 },
+          height: "250px",
+          bgcolor: "#363636",
+          color: "#e0e0e0",
+          boxShadow:
+            "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075), 0 0 0 1px hsla(0, 0%, 0%, 0.05), 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045), 0 3.5px 6px hsla(0, 0%, 0%, 0.09)",
+          padding: 4,
         }}
       >
-        <form
-          className="flex-center flex-column"
-          style={{
-            minHeight: "100%",
-          }}
-          onSubmit={handleLogin}
+        <Typography
+          variant="h5"
+          align="center"
+          sx={{ fontWeight: "200", marginBottom: "20px" }}
         >
-          <TextField
-            id="email"
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="input"
-          />
-          <TextField
-            id="password"
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input"
-          />
-          <Button
-            type="submit"
-            variant="outlined"
-            endIcon={<Login />}
-            sx={{
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              marginTop: "10px",
-              fontSize: "16px",
-            }}
-          >
-            Login
-          </Button>
+          Login Here
+        </Typography>
+        <form method="post" onSubmit={handleLogin}>
+          <Box>
+            <TextField
+              id="email"
+              label="Email"
+              value={email}
+              sx={{ width: "100%" }}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input"
+            />
+          </Box>
+          <Box>
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              value={password}
+              sx={{ width: "100%", marginTop: "15px" }}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+            />
+          </Box>
+          <Box textAlign="center" sx={{ marginTop: "20px" }}>
+            <Button type="submit" variant="outlined" endIcon={<Login />}>
+              Login
+            </Button>
+          </Box>
         </form>
       </Box>
-    </Container>
+    </Box>
   );
 };
 export default LoginComponent;

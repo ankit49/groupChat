@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, call } from "redux-saga/effects";
 import axios from "axios";
 import toast from "react-hot-toast";
 import groupAction from "../actions/group-action";
@@ -8,7 +8,7 @@ const api_url = "http://localhost:5000/api";
 
 function* createGroupSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/create`, req.data);
+    yield axios.post(`${api_url}/group/create`, req.data);
     yield call(getCurrentUserSaga);
   } catch (error) {
     toast.error(error.response.data);
@@ -17,8 +17,7 @@ function* createGroupSaga(req) {
 
 function* groupUpdateSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/update`, req.data);
-
+    yield axios.post(`${api_url}/group/update`, req.data);
     yield call(getCurrentUserSaga);
   } catch (error) {
     toast.error(error.response.data);
@@ -27,7 +26,7 @@ function* groupUpdateSaga(req) {
 
 function* groupDeleteSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/delete`, { id: req.id });
+    yield axios.post(`${api_url}/group/delete`, { id: req.id });
     yield call(getCurrentUserSaga);
   } catch (error) {
     toast.error(error.response.data);
@@ -36,7 +35,7 @@ function* groupDeleteSaga(req) {
 
 function* addGroupMessageSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/addMessage`, {
+    yield axios.post(`${api_url}/group/addMessage`, {
       messageData: req.messageData,
     });
     yield call(getCurrentUserSaga);
@@ -47,7 +46,7 @@ function* addGroupMessageSaga(req) {
 
 function* addLikeSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/addLike`, req.data);
+    yield axios.post(`${api_url}/group/addLike`, req.data);
     yield call(getCurrentUserSaga);
   } catch (error) {
     toast.error(error.response.data);
@@ -56,7 +55,7 @@ function* addLikeSaga(req) {
 
 function* removeLikeSaga(req) {
   try {
-    let { data } = yield axios.post(`${api_url}/group/removeLike`, req.data);
+    yield axios.post(`${api_url}/group/removeLike`, req.data);
     yield call(getCurrentUserSaga);
   } catch (error) {
     toast.error(error.response.data);

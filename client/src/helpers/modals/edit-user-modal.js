@@ -9,6 +9,13 @@ import {
   Typography,
 } from "@mui/material";
 import { EditNote } from "@mui/icons-material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const style = {
   position: "absolute",
@@ -16,9 +23,10 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 300,
-  bgcolor: "#ededed",
+  bgcolor: "#363636",
+  color: "#e0e0e0",
   boxShadow:
-    "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
+    "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075), 0 0 0 1px hsla(0, 0%, 0%, 0.05), 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045), 0 3.5px 6px hsla(0, 0%, 0%, 0.09)",
   padding: 4,
 };
 
@@ -35,16 +43,11 @@ export default function BasicModal(props) {
   };
 
   return (
-    <>
+    <ThemeProvider theme={darkTheme}>
       <Button sx={{ minWidth: "30px" }} onClick={() => setOpen(true)}>
         <EditNote />
       </Button>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
           <Typography
             variant="h6"
@@ -92,6 +95,6 @@ export default function BasicModal(props) {
           </form>
         </Box>
       </Modal>
-    </>
+    </ThemeProvider>
   );
 }

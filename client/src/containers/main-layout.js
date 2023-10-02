@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import authAction from "../actions/auth-action";
-import SidebarComponent from "../components/sidebar-component";
-import { Outlet } from "react-router-dom";
 import groupAction from "../actions/group-action";
+import SidebarComponent from "../components/sidebar-component";
+import bgImage from "../assets/images/bg.jpg";
 
 class MainLayout extends React.Component {
   componentDidMount() {
@@ -39,6 +40,7 @@ class MainLayout extends React.Component {
         <Box
           sx={{
             width: "100%",
+            backgroundImage: `url(${bgImage})`,
             overflowY: "auto",
           }}
         >

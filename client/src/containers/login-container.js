@@ -5,8 +5,6 @@ import history from "../helpers/history";
 import LoginComponent from "../components/login-component";
 import authAction from "../actions/auth-action";
 
-// import "./auth-container.scss";
-
 class LoginContainer extends React.Component {
   componentDidMount() {
     if (localStorage.getItem("token")) {
@@ -19,11 +17,7 @@ class LoginContainer extends React.Component {
   };
 
   render() {
-    return (
-      <div className="login-container">
-        <LoginComponent handleLogin={this.handleLogin} />
-      </div>
-    );
+    return <LoginComponent handleLogin={this.handleLogin} />;
   }
 }
 

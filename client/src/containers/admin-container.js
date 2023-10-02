@@ -22,8 +22,12 @@ class AdminContainer extends React.Component {
   render() {
     return (
       <Box
-        className="flex-center flex-column"
-        sx={{ width: "100%", marginTop: "20px" }}
+        // className="flex-center flex-column"
+        sx={{
+          // width: "100%",
+          height: "80%",
+          marginTop: "40px",
+        }}
       >
         <AddUserComponent handleAddUser={this.handleAddUser} />
         <ListUserComponent

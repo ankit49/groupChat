@@ -41,6 +41,20 @@ const registerUser = async (req, res) => {
   }
 };
 
+const addAdminUser = async () => {
+  let users = await listAllUsers();
+  if (!users.length) {
+    console.log("No Users Found! Creating Admin User");
+    let hashedPw = await bcrypt.hash("admin", 12);
+    await addUser({
+      name: "Admin",
+      email: "admin@admin.com",
+      hashedPw,
+      isAdmin: true,
+    });
+  }
+};
+
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
   let response = await validateUser(email, password);
@@ -155,4 +169,5 @@ module.exports = {
   deleteUser,
   listUsers,
   getCurrentUser,
+  addAdminUser,
 };

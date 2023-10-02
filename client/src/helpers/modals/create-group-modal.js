@@ -10,12 +10,15 @@ import {
   Select,
   OutlinedInput,
   Chip,
-  MenuItem,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { MenuItem } from "react-pro-sidebar";
 
-import { EditNote } from "@mui/icons-material";
-import { Link, Navigate } from "react-router-dom";
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 const style = {
   position: "absolute",
@@ -23,35 +26,30 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: { xs: 300, md: 400 },
-  bgcolor: "#ededed",
+  bgcolor: "#363636",
+  color: "#e0e0e0",
   boxShadow:
-    "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
+    "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075), 0 0 0 1px hsla(0, 0%, 0%, 0.05), 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045), 0 3.5px 6px hsla(0, 0%, 0%, 0.09)",
   padding: 4,
 };
 
-export default function EditGroupModal(props) {
+export default function CreateGroupModal(props) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(props.name);
-  const [users, setUsers] = useState(props.users);
+  const [name, setName] = useState("");
+  const [users, setUsers] = useState([]);
 
-  const navigate = useNavigate();
-
-  const handleGroupUpdate = (e) => {
+  const handleCreateGroup = (e) => {
     e.preventDefault();
-    props.handleGroupUpdate({
+    props.handleCreateGroup({
       name,
       users: users.map((user) => ({
         name: user.split("/")[0],
         email: user.split("/")[1],
       })),
-      id: props.id,
     });
     setOpen(false);
-  };
-
-  const handleGroupDelete = () => {
-    navigate("/app");
-    props.handleGroupDelete(props.id);
+    setName("");
+    setUsers([]);
   };
 
   const handleChange = (event) => {
@@ -60,30 +58,26 @@ export default function EditGroupModal(props) {
     } = event;
     setUsers(value);
   };
-
   return (
-    <>
-      <Button
-        sx={{ minWidth: "30px", color: "white" }}
-        onClick={() => setOpen(true)}
+    <ThemeProvider theme={darkTheme}>
+      <MenuItem
+        onClick={() => {
+          setOpen(true);
+          props.setToggled(false);
+        }}
       >
-        <EditNote />
-      </Button>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+        Create a new Group
+      </MenuItem>
+      <Modal open={open} onClose={() => setOpen(false)}>
         <Box sx={style}>
           <Typography
             variant="h6"
             align="center"
             sx={{ fontWeight: "200", marginBottom: "20px" }}
           >
-            Edit Group Name
+            Create a New Group
           </Typography>
-          <form method="post" onSubmit={handleGroupUpdate}>
+          <form method="post" onSubmit={handleCreateGroup}>
             <Box>
               <TextField
                 variant="standard"
@@ -105,7 +99,7 @@ export default function EditGroupModal(props) {
                   return (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selected.map((value) => (
-                        <Chip key={value} label={value.split("/")[0]} />
+                        <Chip key={value} label={value?.split("/")[0]} />
                       ))}
                     </Box>
                   );
@@ -121,27 +115,14 @@ export default function EditGroupModal(props) {
                 ))}
               </Select>
             </FormControl>
-            <Box
-              sx={{
-                marginTop: "20px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Button
-                variant="outlined"
-                onClick={() => handleGroupDelete()}
-                color="error"
-              >
-                Delete Group
-              </Button>
+            <Box textAlign="center" sx={{ marginTop: "20px" }}>
               <Button variant="outlined" type="submit">
-                Update
+                Create
               </Button>
             </Box>
           </form>
         </Box>
       </Modal>
-    </>
+    </ThemeProvider>
   );
 }

@@ -10,7 +10,7 @@ import {
   AvatarGroup,
   Avatar,
 } from "@mui/material";
-import EditGroupModal from "../../helpers/edit-group-modal";
+import EditGroupModal from "../../helpers/modals/edit-group-modal";
 
 function stringToColor(string) {
   let hash = 0;
@@ -46,15 +46,12 @@ const HeaderComponent = (props) => {
     <Box
       sx={{
         height: "60px",
-        backgroundColor: "#202c33",
-        // background:
-        //   "linear-gradient(90deg, hsla(210, 72%, 14%, 1) 0%, hsla(209, 45%, 26%, 1) 53%, hsla(210, 45%, 43%, 1) 100%)",
-        // boxShadow:
-        //   "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+        backgroundColor: "#363636",
         color: "#b6b7b9",
         padding: "0 20px",
         display: "flex",
         justifyContent: "space-between",
+        borderBottom: "1px solid #636D6E",
       }}
     >
       <Box

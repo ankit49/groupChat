@@ -3,7 +3,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import history from "../helpers/history";
 import authAction from "../actions/auth-action";
-import groupAction from "../actions/group-action";
 
 const api_url = "http://localhost:5000/api";
 
@@ -64,7 +63,7 @@ function* addUserSaga(req) {
 function* deleteUserSaga(req) {
   try {
     let savedToken = yield localStorage.getItem("token");
-    let result = yield axios.post(
+    yield axios.post(
       `${api_url}/auth/deleteUser`,
       { email: req.email },
       {
@@ -80,7 +79,7 @@ function* deleteUserSaga(req) {
 function* editUserSaga(req) {
   try {
     let savedToken = yield localStorage.getItem("token");
-    let result = yield axios.post(`${api_url}/auth/updateUser`, req.data, {
+    yield axios.post(`${api_url}/auth/updateUser`, req.data, {
       headers: { Authorization: `Bearer ${savedToken}` },
     });
     yield call(listAllUserSaga);

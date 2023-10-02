@@ -28,7 +28,13 @@ const AddUserComponent = (props) => {
     <Box
       sx={{
         width: { xs: "95%", md: "80%" },
-        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+        backgroundColor: "#363636",
+        color: "#b6b7b9",
+        margin: "auto",
+        borderRadius: "15px",
+        padding: "20px 0",
+        boxShadow:
+          "inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.075), 0 0 0 1px hsla(0, 0%, 0%, 0.05), 0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045), 0 3.5px 6px hsla(0, 0%, 0%, 0.09)",
       }}
     >
       <Typography variant="h5" align="center" sx={{ marginTop: "10px" }}>
@@ -54,6 +60,7 @@ const AddUserComponent = (props) => {
             <TextField
               variant="standard"
               label="Email..."
+              type="email"
               sx={{ width: "90%" }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
