@@ -18,8 +18,12 @@ To run the application, follow these steps:
    ```
 
    This will concurrently start the server and the client.
+   
+   **On First run** - It will automatically create an Admin user with credentials that can be used for first login.:
+   - Email : admin@admin.com
+   - Pass : admin
 
-3. To run the API test cases, execute the following command in the `server` directory:
+4. To run the API test cases, execute the following command in the `server` directory:
    ```
    npm run test
    ```
