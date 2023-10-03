@@ -137,6 +137,7 @@ const GroupComponent = (props) => {
                       ) ? (
                         <>
                           <a
+                            style={{ color: "red" }}
                             onClick={() => props.handleRemoveLike(message._id)}
                           >
                             <Favorite />
@@ -242,6 +243,7 @@ const GroupComponent = (props) => {
                         ) ? (
                           <>
                             <a
+                              style={{ color: "red" }}
                               onClick={() =>
                                 props.handleRemoveLike(message._id)
                               }
